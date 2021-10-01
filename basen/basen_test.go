@@ -8,7 +8,7 @@ import (
 
 	gc "launchpad.net/gocheck"
 
-	"github.com/cmars/basen"
+	"github.com/KEINOS/base-N-go/basen"
 )
 
 func Test(t *testing.T) { gc.TestingT(t) }

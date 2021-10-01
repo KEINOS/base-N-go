@@ -1,4 +1,4 @@
-// Copyright (c) 2014 Casey Marshall. See LICENSE file for details.
+// Copyright (c) Casey Marshall, KEINOS and The basen Contributors. See LICENSE file for details.
 
 package basen
 

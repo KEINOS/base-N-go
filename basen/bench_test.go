@@ -3,7 +3,7 @@ package basen_test
 import (
 	"testing"
 
-	"github.com/cmars/basen"
+	"github.com/KEINOS/base-N-go/basen"
 )
 
 // These benchmarks mirror the ones in encoding/base64, and results
