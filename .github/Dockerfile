@@ -16,4 +16,4 @@ WORKDIR /workspaces
 
 RUN go mod download
 
-ENTRYPOINT go version && go test .
+ENTRYPOINT go version && go test ./...
