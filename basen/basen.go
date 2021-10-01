@@ -13,9 +13,9 @@ var zero = big.NewInt(int64(0))
 
 // Encoding represents a given base-N encoding.
 type Encoding struct {
-	alphabet string
 	index    map[byte]*big.Int
 	base     *big.Int
+	alphabet string
 }
 
 const base62Alphabet = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
@@ -42,23 +42,27 @@ func newAlphabetMap(s string) map[byte]*big.Int {
 	if utf8.RuneCountInString(s) != len(s) {
 		panic("multi-byte characters not supported")
 	}
+
 	result := make(map[byte]*big.Int)
 	for i := range s {
 		result[s[i]] = big.NewInt(int64(i))
 	}
+
 	if len(result) != len(s) {
 		panic("alphabet contains non-unique characters")
 	}
+
 	return result
 }
 
 // Random returns the base-encoded representation of n random bytes.
 func (enc *Encoding) Random(n int) (string, error) {
 	buf := make([]byte, n)
-	_, err := rand.Reader.Read(buf)
-	if err != nil {
+
+	if _, err := rand.Reader.Read(buf); err != nil {
 		return "", err
 	}
+
 	return enc.EncodeToString(buf), nil
 }
 
@@ -69,6 +73,7 @@ func (enc *Encoding) MustRandom(n int) string {
 	if err != nil {
 		panic(err)
 	}
+
 	return s
 }
 
@@ -80,27 +85,34 @@ func (enc *Encoding) Base() int {
 // EncodeToString returns the base-encoded string representation
 // of the given bytes.
 func (enc *Encoding) EncodeToString(b []byte) string {
+	var result []byte
+
 	n := new(big.Int)
 	r := new(big.Int)
+
 	n.SetBytes(b)
-	var result []byte
+
 	for n.Cmp(zero) > 0 {
 		n, r = n.DivMod(n, enc.base, r)
 		result = append([]byte{enc.alphabet[r.Int64()]}, result...)
 	}
+
 	return string(result)
 }
 
 // DecodeString returns the bytes for the given base-encoded string.
 func (enc *Encoding) DecodeString(s string) ([]byte, error) {
 	result := new(big.Int)
+
 	for i := range s {
 		n, ok := enc.index[s[i]]
 		if !ok {
 			return nil, fmt.Errorf("invalid character %q at index %d", s[i], i)
 		}
+
 		result = result.Add(result.Mul(result, enc.base), n)
 	}
+
 	return result.Bytes(), nil
 }
 
@@ -111,9 +123,12 @@ func (enc *Encoding) DecodeStringN(s string, n int) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	if len(value) > n {
 		return nil, fmt.Errorf("value is too large")
 	}
+
 	pad := make([]byte, n-len(value))
+
 	return append(pad, value...), nil
 }

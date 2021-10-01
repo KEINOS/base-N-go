@@ -19,19 +19,19 @@ var _ = gc.Suite(&Suite{})
 
 func (s *Suite) TestRoundTrip62(c *gc.C) {
 	testCases := []struct {
+		rep string
 		enc *basen.Encoding
 		val []byte
-		rep string
 	}{
-		{basen.Base62, []byte{1}, "1"},
-		{basen.Base62, []byte{61}, "z"},
-		{basen.Base62, []byte{62}, "10"},
-		{basen.Base62, big.NewInt(int64(3844)).Bytes(), "100"},
-		{basen.Base62, big.NewInt(int64(3843)).Bytes(), "zz"},
+		{"1", basen.Base62, []byte{1}},
+		{"z", basen.Base62, []byte{61}},
+		{"10", basen.Base62, []byte{62}},
+		{"100", basen.Base62, big.NewInt(int64(3844)).Bytes()},
+		{"zz", basen.Base62, big.NewInt(int64(3843)).Bytes()},
 
-		{basen.Base58, big.NewInt(int64(10002343)).Bytes(), "Tgmc"},
-		{basen.Base58, big.NewInt(int64(1000)).Bytes(), "if"},
-		{basen.Base58, big.NewInt(int64(0)).Bytes(), ""},
+		{"Tgmc", basen.Base58, big.NewInt(int64(10002343)).Bytes()},
+		{"if", basen.Base58, big.NewInt(int64(1000)).Bytes()},
+		{"", basen.Base58, big.NewInt(int64(0)).Bytes()},
 	}
 
 	for _, testCase := range testCases {
@@ -53,8 +53,10 @@ func (s *Suite) TestRand256(c *gc.C) {
 }
 
 func (s *Suite) TestStringN(c *gc.C) {
-	var val []byte
-	var err error
+	var (
+		val []byte
+		err error
+	)
 
 	val, err = basen.Base58.DecodeStringN("", 4)
 	c.Assert(err, gc.IsNil)
