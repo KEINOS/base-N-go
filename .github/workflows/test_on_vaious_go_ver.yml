@@ -1,0 +1,26 @@
+name: go1.14-17
+
+on:
+  workflow_dispatch:
+  push:
+  schedule:
+    # Runs at 18:00 UTC on Sun (AM 03:00 JST, my time, on every Monday)
+    - cron: '0 18 * * SUN'
+
+jobs:
+  go:
+    name: Run tests on Go via container
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+      - name: Run on Go 1.14
+        run: docker-compose --file ./.github/docker-compose.yml up v1_14
+      - name: Run on Go 1.15
+        run: docker-compose --file ./.github/docker-compose.yml up v1_15
+      - name: Run on Go 1.16
+        run: docker-compose --file ./.github/docker-compose.yml up v1_16
+      - name: Run on Go 1.17
+        run: docker-compose --file ./.github/docker-compose.yml up v1_17
+      - name: Run on latest Go
+        run: docker-compose --file ./.github/docker-compose.yml up latest

@@ -1,0 +1,33 @@
+# Docker Compose for Testing on Multiple Go versions
+version: "3.9"
+services:
+  v1_14:
+    build:
+      context: ..
+      dockerfile: ./.github/Dockerfile
+      args:
+        VARIANT: 1.14-alpine
+  v1_15:
+    build:
+      context: ..
+      dockerfile: ./.github/Dockerfile
+      args:
+        VARIANT: 1.15-alpine
+  v1_16:
+    build:
+      context: ..
+      dockerfile: ./.github/Dockerfile
+      args:
+        VARIANT: 1.16-alpine
+  v1_17:
+    build:
+      context: ..
+      dockerfile: ./.github/Dockerfile
+      args:
+        VARIANT: 1.17-alpine
+  latest:
+    build:
+      context: ..
+      dockerfile: ./.github/Dockerfile
+      args:
+        VARIANT: alpine
