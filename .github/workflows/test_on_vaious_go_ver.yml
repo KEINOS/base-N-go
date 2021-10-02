@@ -1,4 +1,4 @@
-name: go1.14-17
+name: go1.14+
 
 on:
   workflow_dispatch:
